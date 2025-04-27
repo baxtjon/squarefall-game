@@ -1,0 +1,43 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #EEEEEE;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    touch-action: manipulation;
+}
+
+canvas {
+    background: #EEEEEE;
+    display: block;
+}
+
+#restartBtn {
+    display: none;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #DD4247;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+#score {
+    position: absolute;
+    bottom: 40px; /* pastki qismda 40px masofa bilan */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 32px; /* kattaroq font */
+    font-family: sans-serif;
+    color: #333;
+    z-index: 5;
+}
+
