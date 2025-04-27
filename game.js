@@ -6,19 +6,18 @@ const scoreDisplay = document.getElementById('score');
 let cw, ch;
 let circle;
 let square = null;
-let direction = 1; // 1 - right, -1 - left
+let direction = 1; // 1 - o'ngga, -1 - chapga
 let gameOver = false;
 let score = 0;
-let fallSpeed = 2; // boshlang'ich tushish tezligi
+let fallSpeed = 200; // sekundiga px
+let lastTime = 0; // deltaTime uchun
 
 function resize() {
-    // Telefon standart o'lcham
     cw = 390;
     ch = 844;
     canvas.width = cw;
     canvas.height = ch;
 }
-
 
 window.addEventListener('resize', resize);
 resize();
@@ -26,35 +25,32 @@ resize();
 function resetGame() {
     circle = {
         x: cw / 2,
-        y: ch / 2, // ekranning to'g'ri o'rtasida
+        y: ch / 2,
         radius: 20,
-        speed: 5
+        speed: 200 // sekundiga px
     };
     square = createSquare();
     direction = 1;
     gameOver = false;
     score = 0;
-    fallSpeed = 2;
+    fallSpeed = 200; // boshlang'ich tushish tezligi (pixels per second)
     scoreDisplay.textContent = score;
     restartBtn.style.display = 'none';
-    
-    lastTime = performance.now(); // Hozirgi vaqtni olish
-    requestAnimationFrame(gameLoop); // ✅ To'g'ri chaqirish!
+    lastTime = performance.now(); // reset qilish
+    requestAnimationFrame(gameLoop);
 }
-
-
 
 function createSquare() {
     const size = 40;
     const x = circle.x - size / 2;
-    const isBonus = Math.random() < 0.4; // EHTIMOL 40% QILINDI
-    return { x, y: -size, size, angle: 0, rotateSpeed: Math.random() * 0.1 + 0.05, isBonus };
+    const isBonus = Math.random() < 0.4;
+    return { x, y: -size, size, angle: 0, rotateSpeed: Math.random() * 1 + 0.5, isBonus };
 }
-
 
 function update(deltaTime) {
     if (gameOver) return;
 
+    // Doyira harakati
     circle.x += circle.speed * direction * deltaTime;
 
     const PADDING = 40;
@@ -62,32 +58,32 @@ function update(deltaTime) {
         direction *= -1;
     }
 
-    // Square pastga tushadi
+    // To'rtburchak pastga tushadi
     square.y += fallSpeed * deltaTime;
     square.angle += square.rotateSpeed * deltaTime;
 
-    // Collision detection
-    let dx = circle.x - (square.x + square.size/2);
-    let dy = circle.y - (square.y + square.size/2);
+    // Collision tekshirish
+    let dx = circle.x - (square.x + square.size / 2);
+    let dy = circle.y - (square.y + square.size / 2);
     let distance = Math.sqrt(dx * dx + dy * dy);
 
-    if (distance < circle.radius + square.size/2) {
+    if (distance < circle.radius + square.size / 2) {
         if (square.isBonus) {
             score += 10;
             scoreDisplay.textContent = score;
             square = createSquare();
-            fallSpeed += 0.2;
+            fallSpeed += 20; // har bonusdan keyin tezlashadi
         } else {
             gameOver = true;
             restartBtn.style.display = 'block';
         }
     }
 
+    // Agar square ekrandan chiqib ketsa
     if (square.y > ch + square.size) {
         square = createSquare();
     }
 }
-
 
 function drawRoad() {
     const padding = 40;
@@ -110,58 +106,53 @@ function drawRoad() {
     ctx.fill();
 }
 
-
 function draw() {
     ctx.clearRect(0, 0, cw, ch);
 
-    
-
-    // 2. Doyira harakatlanadigan yo'l chizamiz
+    // 1. Doyira harakatlanadigan yo'l
     drawRoad();
 
-    // 3. Harakatlanayotgan doira (circle)
+    // 2. Harakatlanayotgan doira (circle)
     ctx.beginPath();
     ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
     ctx.fillStyle = '#DD4247';
     ctx.fill();
 
-    // 4. Tushayotgan to'rtburchak (square)
+    // 3. Tushayotgan to'rtburchak (square)
     ctx.save();
-    ctx.translate(square.x + square.size/2, square.y + square.size/2);
+    ctx.translate(square.x + square.size / 2, square.y + square.size / 2);
     ctx.rotate(square.angle);
     ctx.fillStyle = square.isBonus ? '#DD4247' : '#000';
-    ctx.fillRect(-square.size/2, -square.size/2, square.size, square.size);
+    ctx.fillRect(-square.size / 2, -square.size / 2, square.size, square.size);
     ctx.restore();
 
-    // 5. Agar o'yin tugagan bo'lsa, Score textlarini ko'rsatamiz
+    // 4. O'yin tugasa
     if (gameOver) {
-
         ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height); // canvas.width va canvas.height ishlatamiz!
+        ctx.fillRect(0, 0, cw, ch);
 
-        // Katta point (raqam)
         ctx.fillStyle = '#DD4247';
         ctx.font = 'bold 64px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(`${score}`, cw/2, ch * 0.3);
+        ctx.fillText(`${score}`, cw / 2, ch * 0.3);
 
-        // Kichik 'Your Score' matni
         ctx.fillStyle = '#FFFFFF';
         ctx.font = '24px sans-serif';
-        ctx.fillText('Your Score', cw/2, ch * 0.3 + 40);
+        ctx.fillText('Your Score', cw / 2, ch * 0.3 + 40);
     }
 }
 
+function gameLoop(currentTime) {
+    const deltaTime = (currentTime - lastTime) / 1000; // sekundlarga o'tkazamiz
+    lastTime = currentTime;
 
+    update(deltaTime);
+    draw();
 
-
-// function loop() {
-//     update();
-//     draw();
-//     if (!gameOver) {
-//         requestAnimationFrame(loop);
-//     }
-// }
+    if (!gameOver) {
+        requestAnimationFrame(gameLoop);
+    }
+}
 
 canvas.addEventListener('click', () => {
     if (!gameOver) {
