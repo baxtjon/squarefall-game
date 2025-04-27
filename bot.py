@@ -1,6 +1,6 @@
 import telebot
 
-BOT_TOKEN = 'BOT TOKENINGIZ'
+BOT_TOKEN = '7244920772:AAEu2KlNZcvPFH1RUoAdYKDQEsRWWOsPBi8'
 GAME_SHORT_NAME = 'squarefallgame'
 GAME_URL = 'https://squarefall-bot.vercel.app/'  # o'yin url
 
