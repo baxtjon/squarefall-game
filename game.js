@@ -9,7 +9,7 @@ let square = null;
 let direction = 1; // 1 - right, -1 - left
 let gameOver = false;
 let score = 0;
-let fallSpeed = 4; // boshlang'ich tushish tezligi
+let fallSpeed = 2; // boshlang'ich tushish tezligi
 
 function resize() {
     // Telefon standart o'lcham
@@ -34,7 +34,7 @@ function resetGame() {
     direction = 1;
     gameOver = false;
     score = 0;
-    fallSpeed = 4;
+    fallSpeed = 2;
     scoreDisplay.textContent = score;
     restartBtn.style.display = 'none';
     loop();
