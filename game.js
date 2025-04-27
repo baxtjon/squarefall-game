@@ -37,8 +37,11 @@ function resetGame() {
     fallSpeed = 2;
     scoreDisplay.textContent = score;
     restartBtn.style.display = 'none';
-    loop();
+    
+    lastTime = performance.now(); // Hozirgi vaqtni olish
+    requestAnimationFrame(gameLoop); // ✅ To'g'ri chaqirish!
 }
+
 
 
 function createSquare() {
@@ -49,19 +52,19 @@ function createSquare() {
 }
 
 
-function update() {
+function update(deltaTime) {
     if (gameOver) return;
 
-    circle.x += circle.speed * direction;
+    circle.x += circle.speed * direction * deltaTime;
 
     const PADDING = 40;
     if (circle.x - circle.radius < PADDING || circle.x + circle.radius > cw - PADDING) {
         direction *= -1;
     }
 
-    // Update square
-    square.y += fallSpeed;
-    square.angle += square.rotateSpeed;
+    // Square pastga tushadi
+    square.y += fallSpeed * deltaTime;
+    square.angle += square.rotateSpeed * deltaTime;
 
     // Collision detection
     let dx = circle.x - (square.x + square.size/2);
@@ -70,23 +73,21 @@ function update() {
 
     if (distance < circle.radius + square.size/2) {
         if (square.isBonus) {
-            // Bonus square tegdi: +10 ball
             score += 10;
             scoreDisplay.textContent = score;
             square = createSquare();
             fallSpeed += 0.2;
         } else {
-            // Oddiy square tegdi: Game Over
             gameOver = true;
             restartBtn.style.display = 'block';
         }
     }
 
-    // Square ekrandan chiqib ketganda: hech narsa qilmaymiz
     if (square.y > ch + square.size) {
         square = createSquare();
     }
 }
+
 
 function drawRoad() {
     const padding = 40;
@@ -154,13 +155,13 @@ function draw() {
 
 
 
-function loop() {
-    update();
-    draw();
-    if (!gameOver) {
-        requestAnimationFrame(loop);
-    }
-}
+// function loop() {
+//     update();
+//     draw();
+//     if (!gameOver) {
+//         requestAnimationFrame(loop);
+//     }
+// }
 
 canvas.addEventListener('click', () => {
     if (!gameOver) {
