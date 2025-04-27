@@ -9,7 +9,7 @@ let square = null;
 let direction = 1; // 1 - o'ngga, -1 - chapga
 let gameOver = false;
 let score = 0;
-let fallSpeed = 200; // sekundiga px
+let fallSpeed = 400; // sekundiga px
 let lastTime = 0; // deltaTime uchun
 
 function resize() {
