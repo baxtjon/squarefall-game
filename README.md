@@ -118,6 +118,12 @@ Bu — HTML5 asosida tayyorlangan mobil o‘yin. Siz aylanuvchi doirani o‘ngga
 
 ---
 
+## 🎯 O‘yinni Sinab Ko‘ring
+
+[▶️ Square Fall O‘yinini O‘ynash](https://squarefall-game.vercel.app/)
+
+---
+
 ## 📜 Litsenziya
 
 Ushbu loyiha ochiq manbali va bepul.  
@@ -128,11 +134,5 @@ Xohlagancha nusxa oling, yaxshilang va o‘zingizning versiyangizni yarating! �
 ## 🤝 Muallif
 
 Ushbu loyiha ❤️ bilan **Baxtjon Chapayev** tomonidan yaratilgan.
-
-[▶️ Square Fall O‘yinini O‘ynash](https://squarefall-game.vercel.app/)
-
----
-
-## 📦 Loyihaning Tuzilishi
 
 
