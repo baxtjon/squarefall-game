@@ -18,3 +18,18 @@ def callback_inline(call):
         bot.answer_callback_query(call.id, text="Xatolik!")
 
 bot.infinity_polling()
+
+
+# ---
+
+# ## 📜 License
+
+# This project is open-source and free to use.  
+# Feel free to fork, improve, and share! 🚀
+
+# ---
+
+# ## 🤝 Credits
+
+# Developed with ❤️ by Baxtjon Chapayev.
+
